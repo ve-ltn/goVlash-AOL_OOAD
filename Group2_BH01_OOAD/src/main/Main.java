@@ -112,6 +112,8 @@ public class Main extends Application{
 	}
 	private void loadServiceData() {
 		services.clear();
+		
+//		 ADA DI CLASS MODEL SERVICE getAllServices()
         try (Connection conn = MySQLConnection.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Service")) {
@@ -141,7 +143,8 @@ public class Main extends Application{
 			showAlert(Alert.AlertType.WARNING, "Input Error", "Please fill all fields!");
 			return;
 		}
-
+		
+//		ADA DI CLASS MODEL SERVICE addService(name, description, price, duration)
         try (Connection conn = MySQLConnection.getInstance().getConnection()) {
             String query = "INSERT INTO Service (Name, Description, Price, Duration) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -171,8 +174,12 @@ public class Main extends Application{
 	    totalWeightField.getValueFactory().setValue(2.0);
 	    notesField.clear();        
 	}
+	
+	
 	private void loadTransactionData() {
 		transactions.clear();
+		
+//		ADA DI CLASS MODEL TRANSACTION getAllTransaction()
 	    try (Connection conn = MySQLConnection.getInstance().getConnection();
 	         Statement stmt = conn.createStatement();
 	         ResultSet rs = stmt.executeQuery("SELECT * FROM Transaction")) {
@@ -220,6 +227,8 @@ public class Main extends Application{
 	        return;
 	    }
 	    LocalDateTime transactionDate = transactionDateOnly.atStartOfDay();
+	    
+//	    ADA DI CLASS MODEL TRANSACTION orderLaundryService(serviceId, customerId, totalWeight, notes)
 	    try (Connection conn = MySQLConnection.getInstance().getConnection()) {
 	        String query = "INSERT INTO Transaction " +
 	                "(ServiceID, CustomerID, ReceptionistID, LaundryStaffID, TransactionDate, Status, TotalWeight, Notes) " +
@@ -255,6 +264,8 @@ public class Main extends Application{
 	}
 	private void loadCustomerData() {
 		customers.clear();
+		
+//		ADA DI CLASS MODEL USER bisa pake getUserByRole(role)
         try (Connection conn = MySQLConnection.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Customer")) {
@@ -275,15 +286,16 @@ public class Main extends Application{
             e.printStackTrace();
         }
     }
+		
 	private void insertCustomer() {
 		int customerID = Integer.parseInt(employeeIDField.getText());
-		String customerName = employeeNameField.getText();
-		String customerEmail = employeeEmailField.getText();
-		String customerPassword = employeePasswordField.getText();
+		String customerName = customerNameField.getText();
+		String customerEmail = customerEmailField.getText();
+		String customerPassword = customerPasswordField.getText();
 		String confirmPassword = customerConfirmPasswordField.getText();
-		String customerGender = employeeGenderComboBox.getValue();
-		LocalDate customerDOB = employeeDOBDatePicker.getValue();
-		String customerRole = employeeRoleComboBox.getValue();
+		String customerGender = customerGenderComboBox.getValue();
+		LocalDate customerDOB = customerDOBDatePicker.getValue();
+		String customerRole = customerRoleComboBox.getValue();
 
         if (customerName.isEmpty() || customerEmail.isEmpty() || customerPassword.isEmpty() || customerGender.isEmpty() || customerDOB == null || customerRole.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Input Error", "Please fill all fields!");
@@ -315,6 +327,8 @@ public class Main extends Application{
             showAlert(Alert.AlertType.WARNING, "Input Error", "Role must be: Customer!");
             return;
         }
+        
+//        ADA DI CLASS MODEL USER addUser(name, email, password, gender, dob, role)
         try (Connection conn = MySQLConnection.getInstance().getConnection()) {
             String query = "INSERT INTO CUSTOMER (Name, Email, Password, Gender, DOB, Role) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -342,6 +356,8 @@ public class Main extends Application{
 	    createdAtField.setValue(null);
 	    isReadCheckBox.setSelected(false);
 	}
+	
+//	GADA KUMASUKIN KE MODEL SOALNYA GATAU KEPAKE ATO GK (GK ADA DI DIAGRAM)
 	private void loadNotifData() {
 		notifications.clear();
         try (Connection conn = MySQLConnection.getInstance().getConnection();
@@ -362,6 +378,7 @@ public class Main extends Application{
             e.printStackTrace();
         }
     }
+	
 	private void insertNotification() {
 		int notifID = Integer.parseInt(notifIDField.getText());
 		int recipientID = Integer.parseInt(recipientIDField.getText());
@@ -374,9 +391,9 @@ public class Main extends Application{
             return;
         }
         
-        	
+//        ADA DI CLASS MODEL NOTIFICATION sendNotification(recipientId, message)
         try (Connection conn = MySQLConnection.getInstance().getConnection()) {
-            String query = "INSERT INTO Notification (`Notification ID`, `Recipient ID`, `Notification Message`, `Created At`, `Is Read`)\r\n" + "";
+            String query = "INSERT INTO Notification (`Notification ID`, `Recipient ID`, `Notification Message`, `Created At`, `Is Read`)\r\n" + "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
             PreparedStatement checkRecipient = conn.prepareStatement(
             	    "SELECT * FROM Customer WHERE CustomerID = ?"
@@ -417,6 +434,8 @@ public class Main extends Application{
 	}
 	private void loadEmployeeData() {
 		employees.clear();
+		
+//		ADA DI CLASS MODEL USER getAllEmployees()
         try (Connection conn = MySQLConnection.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Employee")) {
@@ -437,6 +456,7 @@ public class Main extends Application{
             e.printStackTrace();
         }
     }
+	
 	private void insertEmployee() {
 		int employeeID = Integer.parseInt(employeeIDField.getText());
 		String employeeName = employeeNameField.getText();
@@ -477,6 +497,8 @@ public class Main extends Application{
             showAlert(Alert.AlertType.WARNING, "Input Error", "Role must be either: Admin, Laundry Staff, or Receptionist!");
             return;
         }
+        
+//      ADA DI CLASS MODEL USER addEmployee(name, email, password, gender, dob, role)
         try (Connection conn = MySQLConnection.getInstance().getConnection()) {
             String query = "INSERT INTO Employee (Name, Email, Password, Gender, DOB, Role) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query);
